@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#101728" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Prayer Journal" />
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <title>Daily Prayer Journal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="top">
+    <div class="top__left">
+      <div class="mark" aria-hidden="true">✦</div>
+      <div class="top__titles">
+        <div class="appname">Daily Prayer Journal</div>
+        <div class="today" id="todayLabel"></div>
+      </div>
+    </div>
+
+    <div class="top__right">
+      <button class="btn btn--ghost" id="installBtn" hidden>Install</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero card">
+      <div class="hero__head">
+        <div>
+          <div class="kicker">Today</div>
+          <h1 class="h1">Quiet time, zero noise.</h1>
+        </div>
+        <div class="pill" id="streakPill" title="Your streak">🔥 0</div>
+      </div>
+
+      <div class="promptbox">
+        <div class="row row--between row--center">
+          <div class="label">Daily reflection</div>
+          <button class="btn btn--ghost btn--sm" id="shufflePromptBtn" title="New prompt">Shuffle</button>
+        </div>
+        <div class="prompt" id="promptText"></div>
+        <div class="chips" id="promptTags"></div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Sections">
+        <button class="tab is-active" data-tab="write" role="tab" aria-selected="true">Write</button>
+        <button class="tab" data-tab="library" role="tab" aria-selected="false">Library</button>
+        <button class="tab" data-tab="tools" role="tab" aria-selected="false">Tools</button>
+      </div>
+    </section>
+
+    <section class="card" id="tab-write">
+      <div class="row row--between row--center">
+        <h2 class="h2">Write a prayer</h2>
+        <div class="muted small" id="autosaveStatus"></div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="titleInput">Title</label>
+        <input id="titleInput" class="input" placeholder="e.g., Gratitude, Anxiety, Guidance..." maxlength="80" />
+      </div>
+
+      <div class="field">
+        <label class="label" for="entryInput">Prayer / Journal</label>
+        <textarea id="entryInput" class="textarea" rows="9" placeholder="Write like you're speaking normally. No fancy words required."></textarea>
+      </div>
+
+      <div class="row row--between row--center">
+        <div class="muted small" id="saveHint"></div>
+        <div class="row row--gap">
+          <button class="btn btn--ghost" id="clearBtn">Clear</button>
+          <button class="btn btn--primary" id="saveBtn">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="tab-library" hidden>
+      <div class="row row--between row--center">
+        <h2 class="h2">Your entries</h2>
+        <input id="searchInput" class="input input--sm" placeholder="Search..." />
+      </div>
+
+      <div class="entries" id="entriesList"></div>
+      <div class="empty" id="emptyState">No entries yet. Your first one will hit different.</div>
+    </section>
+
+    <section class="card" id="tab-tools" hidden>
+      <h2 class="h2">Tools</h2>
+      <p class="muted">Back up your journal (recommended). Everything is stored locally on this device.</p>
+
+      <div class="tools">
+        <button class="btn btn--ghost" id="exportBtn">Export backup (.json)</button>
+        <label class="btn btn--ghost filebtn">
+          Import backup
+          <input id="importFile" type="file" accept="application/json" hidden />
+        </label>
+        <button class="btn btn--danger" id="wipeBtn">Wipe all data</button>
+      </div>
+
+      <div class="muted small" id="toolsHint"></div>
+    </section>
+
+    <footer class="foot">
+      <span class="muted small">Offline-capable • No accounts • No paywalls</span>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
