@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="My Journal" />
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <title>My Journal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="brand">
+      <div class="mark" aria-hidden="true">✦</div>
+      <div>
+        <div class="name">My Journal</div>
+        <div class="sub" id="todayLine">—</div>
+      </div>
+    </div>
+    <button class="pill ghost" id="quickBtn" title="Quick check‑in">Check‑In</button>
+  </header>
+
+  <main class="shell">
+    <!-- HOME -->
+    <section class="screen" id="screen-home" data-screen>
+      <div class="card hero">
+        <div class="row">
+          <div>
+            <div class="kicker">Today</div>
+            <div class="date" id="todayLabel">—</div>
+          </div>
+          <div class="stat" id="streakStat" title="Streak">🔥 0</div>
+        </div>
+
+        <div class="prompt" id="promptText">—</div>
+        <div class="chips" id="promptTags"></div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="pill primary" id="writeBtn">Write</button>
+          <button class="pill" id="shufflePromptBtn">New Prompt</button>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="row">
+            <div>
+              <div class="h">Prayer of the Day</div>
+              <div class="muted">Short. Real. Yours.</div>
+            </div>
+            <button class="pill ghost" id="regenPrayerBtn">Refresh</button>
+          </div>
+          <div class="block" id="prayerText">—</div>
+          <div class="row" style="margin-top:10px">
+            <button class="pill" id="copyPrayerBtn">Copy</button>
+            <button class="pill" id="savePrayerBtn">Save</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="row">
+            <div>
+              <div class="h">Devotional</div>
+              <div class="muted">A small focus for today.</div>
+            </div>
+            <button class="pill ghost" id="regenDevoBtn">New</button>
+          </div>
+          <div class="devoTitle" id="devoTitle">—</div>
+          <div class="block" id="devoBody">—</div>
+          <div class="row" style="margin-top:10px">
+            <button class="pill" id="reflectBtn">Reflect</button>
+            <button class="pill" id="talkBtn">Talk</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <div>
+            <div class="h">Recent</div>
+            <div class="muted">Your last saved entries.</div>
+          </div>
+          <button class="pill" id="viewAllBtn">View all</button>
+        </div>
+        <div class="list" id="recentList"></div>
+        <div class="empty" id="recentEmpty">No entries yet. First one hits different.</div>
+      </div>
+    </section>
+
+    <!-- JOURNAL -->
+    <section class="screen" id="screen-journal" data-screen hidden>
+      <div class="card">
+        <div class="row">
+          <div>
+            <div class="h">Write</div>
+            <div class="muted">No filter. Just honesty.</div>
+          </div>
+          <div class="badge" id="draftBadge">Draft</div>
+        </div>
+
+        <label class="label" for="titleInput">Title (optional)</label>
+        <input class="input" id="titleInput" placeholder="e.g., Gratitude, Anxiety, Guidance..." maxlength="90" />
+
+        <label class="label" for="entryInput">Journal / Prayer</label>
+        <textarea class="textarea" id="entryInput" rows="10" placeholder="Write like it’s a conversation."></textarea>
+
+        <div class="row" style="margin-top:12px">
+          <button class="pill primary" id="saveEntryBtn">Save Entry</button>
+          <button class="pill ghost" id="clearEntryBtn">Clear</button>
+        </div>
+
+        <div class="muted tiny" id="saveHint"></div>
+      </div>
+    </section>
+
+    <!-- CALENDAR / ENTRIES -->
+    <section class="screen" id="screen-entries" data-screen hidden>
+      <div class="card">
+        <div class="row">
+          <div>
+            <div class="h">Entries</div>
+            <div class="muted">Search + export backups.</div>
+          </div>
+          <div class="row">
+            <input class="input small" id="searchInput" placeholder="Search..." />
+            <button class="pill" id="exportBtn">Export</button>
+            <label class="pill ghost filelike">Import
+              <input id="importFile" type="file" accept="application/json" hidden />
+            </label>
+          </div>
+        </div>
+
+        <div class="list" id="entriesList"></div>
+        <div class="empty" id="entriesEmpty">Nothing saved yet.</div>
+      </div>
+    </section>
+
+    <!-- COMPANION -->
+    <section class="screen" id="screen-companion" data-screen hidden>
+      <div class="card">
+        <div class="row">
+          <div>
+            <div class="h">Companion</div>
+            <div class="muted">Talk it out. No judgement.</div>
+          </div>
+          <button class="pill ghost" id="clearChatBtn">Clear</button>
+        </div>
+
+        <div class="chat" id="chatLog"></div>
+
+        <div class="chatbar">
+          <input class="input" id="chatInput" placeholder="Type what’s going on..." />
+          <button class="pill primary" id="sendChatBtn">Send</button>
+        </div>
+
+        <div class="chips" style="margin-top:10px">
+          <button class="chipbtn" data-quick="Help me pray about this.">Help me pray</button>
+          <button class="chipbtn" data-quick="Give me a devotional reflection.">Reflection</button>
+          <button class="chipbtn" data-quick="I’m stressed. What should I do right now?">Stress</button>
+          <button class="chipbtn" data-quick="Give me 3 journal prompts.">Prompts</button>
+        </div>
+
+        <div class="muted tiny" style="margin-top:10px">
+          This companion is local (no server). Optional real AI can be added later.
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="screen" id="screen-settings" data-screen hidden>
+      <div class="card">
+        <div class="h">Settings</div>
+        <div class="muted">Make it yours.</div>
+
+        <div class="settings">
+          <div class="setrow">
+            <div>
+              <div class="h small">Theme accent</div>
+              <div class="muted tiny">Warm gold vs calm blue vs sage green.</div>
+            </div>
+            <select class="select" id="accentSelect">
+              <option value="gold">Warm Gold</option>
+              <option value="blue">Calm Blue</option>
+              <option value="green">Sage Green</option>
+            </select>
+          </div>
+
+          <div class="setrow">
+            <div>
+              <div class="h small">Data</div>
+              <div class="muted tiny">Everything is stored locally on this device unless you export.</div>
+            </div>
+            <button class="pill danger" id="wipeAllBtn">Wipe all data</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom">
+    <button class="tab active" data-nav="home" aria-label="Home"><span class="ico">⌂</span><span class="lab">Home</span></button>
+    <button class="tab" data-nav="journal" aria-label="Journal"><span class="ico">✎</span><span class="lab">Write</span></button>
+    <button class="tab" data-nav="entries" aria-label="Entries"><span class="ico">▦</span><span class="lab">Entries</span></button>
+    <button class="tab" data-nav="companion" aria-label="Companion"><span class="ico">◈</span><span class="lab">Talk</span></button>
+    <button class="tab" data-nav="settings" aria-label="Settings"><span class="ico">⚙</span><span class="lab">Settings</span></button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
